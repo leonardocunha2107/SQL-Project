@@ -43,10 +43,9 @@ CREATE TABLE artist(
     CHECK(syear < eyear OR (syear = eyear AND (smonth < emonth OR (smonth = emonth AND sday <= eday)))),
 
     /* Artist of type 'Person' must have gender */
-    CHECK((type <> 'Person') OR (gender IS NOT NULL)),
-
-    /* Artist of types that are not 'Person' must have no gender */
-    CHECK((type = 'Person') OR  (gender IS NULL))
+    CHECK(((SELECT t.name
+            FROM artist_type t
+            WHERE t.id = id) <> 'Person') OR (gender IS NOT NULL))
 );
 
 CREATE TABLE release_status(
