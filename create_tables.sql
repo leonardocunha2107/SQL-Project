@@ -85,7 +85,7 @@ CREATE TABLE release_country(
 CREATE TABLE release_has_artist(
     release INTEGER,
     artist INTEGER,
-    contribution VARCHAR,
+    contribution INTEGER,
     PRIMARY KEY(release,artist),
     FOREIGN KEY (release) REFERENCES release.id,
     FOREIGN KEY (artist) REFERENCES artist.id
@@ -95,5 +95,17 @@ CREATE TABLE track(
     id INTEGER,
     name VARCHAR,
     no INTEGER,
-    lenght
-)
+    length INTEGER,
+    release INTEGER,
+    PRIMARY KEY(id),
+    FOREIGN KEY(release) REFERENCES release.id
+);
+
+CREATE TABLE track_has_artist(
+    artist INTEGER,
+    track INTEGER,
+    contribution INTEGER,
+    PRIMARY KEY(artist,track),
+    FOREIGN KEY(artist) REFERENCES artist.id,
+    FOREIGN KEY(track) REFERENCES track.id
+);
