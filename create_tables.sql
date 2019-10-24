@@ -1,99 +1,103 @@
 
-create table artist_type
-(
-    id INTEGER,
-    name VARCHAR,
-    PRIMARY KEY(id),
-    CHECK(name=='Person' OR name =='Orchestra' OR name =='Character' OR name == 'Group' OR name =='Choir' OR name == 'Other')
+create table artist_type(
+    id INTEGER PRIMARY KEY,
+    name VARCHAR
+);
 
-);
 CREATE TABLE gender(
-    id INTEGER,
-    name VARCHAR,
-    PRIMARY KEY(id)
+    id INTEGER PRIMARY KEY,
+    name VARCHAR
 );
+
 CREATE TABLE contry(
-    id  INTEGER,
+    id  INTEGER PRIMARY KEY,
     name VARCHAR,
-    PRIMARY KEY(id)
 );
 
 CREATE TABLE artist(
-    id INTEGER,
+    id INTEGER PRIMARY KEY,
     name VARCHAR,
-    gender INTEGER,
+    gender INTEGER REFERENCES gender.id ON DELETE SET NULL,
     sday INTEGER,
     smonth INTEGER,
     syear INTEGER,
     eday INTEGER,
     emonth INTEGER,
     eyear INTEGER,
-    type INTEGER,
-    area VARCHAR,
+    type INTEGER NOT NULL REFERENCES artist_type.id ON DELETE CASCADE,
+    area INTEGER REFERENCES country.id ON DELETE SET NULL,
 
-
-    PRIMARY KEY(name),
-    FOREIGN KEY(type) REFERENCES type.id
-
-    CHECK (0<=eday AND 31>=eday) AND 0<=sday AND sday<=31 AND
-            0<=smonth AND 12>=smonth AND 0<=emonth AND 12>= emonth),        
+    /* Validate starting date */
+    CHECK(smonth >= 1 AND smonth <= 12 and sday >= 1 AND sday <= 31),
+    CHECK((smonth NOT IN (4, 6, 9, 11)) OR (sday <= 30)),
+    CHECK ((syear % 400 <> 0 AND (syear % 100 = 0 OR syear % 4 <> 0)) OR smonth <> 2 OR sday <=29),
+    CHECK ((syear % 400 = 0 OR (syear % 100 <> 0 AND syear % 4 = 0)) OR smonth <> 2 OR sday <= 28),
     
+    /* Validate ending date */
+    CHECK(emonth >= 1 AND emonth <= 12 and eday >= 1 AND eday <= 31),
+    CHECK((emonth NOT IN (4, 6, 9, 11)) OR (eday <= 30)),
+    CHECK((eyear % 400 <> 0 AND (eyear % 100 = 0 OR eyear % 4 <> 0)) OR emonth <> 2 OR eday <= 29),
+    CHECK((eyear % 400 = 0 OR (eyear % 100 <> 0 AND eyear % 4 = 0)) OR emonth <> 2 OR eday <= 28),
+    
+    /* Check that the starting date comes before the ending date */
+    CHECK(syear < eyear OR (syear = eyear AND (smonth < emonth OR (smonth = emonth AND sday <= eday)))),
+
+    /* Artist of type 'Person' must have gender */
+    CHECK((type <> 'Person') OR (gender IS NOT NULL)),
+
+    /* Artist of types that are not 'Person' must have no gender */
+    CHECK((type = 'Person') OR  (gender IS NULL))
 );
 
-CREATE ASSERTION personHasGender AS
-CHECK((
-    SELECT a.gender
-    FROM artist_type t, artist a
-    WHERE(a.id==t.id AND t.name=='Person')) 
-    IN
-                           (SELECT id
-                            FROM gender
-                            WHERE *)
-);
 CREATE TABLE release_status(
-    id INTEGER,
+    id INTEGER PRIMARY KEY,
     name VARCHAR,
-    PRIMARY KEY(id)
-    CHECK (name=='Official' OR  name == 'Promotion' OR name=='Bootleg' or name=='Pseudo-Release')
+
+    /* Check that it is one of valid status */
+    CHECK(name = 'Official' OR name = 'Promotion' OR name = 'Bootleg' or name = 'Pseudo-Release')
 );
 
 CREATE TABLE release(
-    id INTEGER,
+    id INTEGER PRIMARY KEY,
     title VARCHAR,
-    status INTEGER,
+    status INTEGER REFERENCES release_status.id ON DELETE SET NULL,
     barcode VARCHAR(26),
     packaging VARCHAR(22),
-    PRIMARY KEY(id)
 );
 
-
-CREATE ASSERTION statusKey //TODO
-
 CREATE TABLE release_country(
-    release INTEGER,
+    release INTEGER NOT NULL REFERENCES release.id ON DELETE SET NULL,
     country VARCHAR,
     day INTEGER,
     month INTEGER,
     year INTEGER,
-
-    CHECK( 0<=day AND 31>= day AND 0<= month AND 12 >= month),
-    PRIMARY KEY(release,country)
-    FOREIGN KEY (release) REFERENCES release.id
+    PRIMARY KEY(release, country),
+    
+    /* Validate date */
+    CHECK(month >= 1 AND month <= 12 and day >= 1 AND day <= 31),
+    CHECK((month NOT IN (4, 6, 9, 11)) OR (day <= 30)),
+    CHECK((year % 400 <> 0 AND (year % 100 = 0 OR year % 4 <> 0)) OR month <> 2 OR day <= 29),
+    CHECK((year % 400 = 0 OR (year % 100 <> 0 AND year % 4 = 0)) OR month <> 2 OR day <= 28)
 );
 
-
 CREATE TABLE release_has_artist(
-    release INTEGER,
-    artist INTEGER,
-    contribution VARCHAR,
-    PRIMARY KEY(release,artist),
-    FOREIGN KEY (release) REFERENCES release.id,
-    FOREIGN KEY (artist) REFERENCES artist.id
+    release INTEGER REFERENCES release.id ON DELETE CASCADE,
+    artist INTEGER REFERENCES artist.id ON DELETE CASCADE,
+    contribution VARCHAR(2),
+    PRIMARY KEY(release, artist)
 );
 
 CREATE TABLE track(
-    id INTEGER,
+    id INTEGER PRIMARY KEY,
     name VARCHAR,
     no INTEGER,
-    lenght
+    length INTEGER,
+    release INTEGER NOT NULL REFERENCES release.id ON DELETE CASCADE
+);
+
+CREATE TABLE track_has_artist(
+    artist INTEGER REFERENCES artist.id ON DELETE CASCADE,
+    track INTEGER REFERENCES track.id ON DELETE CASCADE,
+    contribution VARCHAR(2),
+    PRIMARY KEY(artist, track)
 )
