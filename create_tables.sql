@@ -9,9 +9,9 @@ CREATE TABLE gender(
     name VARCHAR
 );
 
-CREATE TABLE contry(
+CREATE TABLE country(
     id  INTEGER PRIMARY KEY,
-    name VARCHAR,
+    name VARCHAR
 );
 
 CREATE TABLE artist(
@@ -62,7 +62,7 @@ CREATE TABLE release(
     title VARCHAR,
     status INTEGER REFERENCES release_status.id ON DELETE SET NULL,
     barcode VARCHAR(26),
-    packaging VARCHAR(22),
+    packaging VARCHAR(22)
 );
 
 CREATE TABLE release_country(
@@ -83,7 +83,7 @@ CREATE TABLE release_country(
 CREATE TABLE release_has_artist(
     release INTEGER REFERENCES release.id ON DELETE CASCADE,
     artist INTEGER REFERENCES artist.id ON DELETE CASCADE,
-    contribution VARCHAR(2),
+    contribution INTEGER,
     PRIMARY KEY(release, artist)
 );
 
@@ -98,6 +98,6 @@ CREATE TABLE track(
 CREATE TABLE track_has_artist(
     artist INTEGER REFERENCES artist.id ON DELETE CASCADE,
     track INTEGER REFERENCES track.id ON DELETE CASCADE,
-    contribution VARCHAR(2),
+    contribution INTEGER,
     PRIMARY KEY(artist, track)
 )
