@@ -1,8 +1,0 @@
-Will not apply HSTS. The HSTS database must be a regular and non-world-writable file.
-ERROR: could not open HSTS store at '/home/leo/.wget-hsts'. HSTS will be disabled.
---2019-10-21 15:27:17--  https://drive.google.com/uc?export=download
-Resolving drive.google.com (drive.google.com)... 172.217.18.206, 2a00:1450:4007:811::200e
-Connecting to drive.google.com (drive.google.com)|172.217.18.206|:443... connected.
-HTTP request sent, awaiting response... 400 Bad Request
-2019-10-21 15:27:17 ERROR 400: Bad Request.
-
