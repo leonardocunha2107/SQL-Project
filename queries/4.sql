@@ -1,4 +1,4 @@
 SELECT country as id, COUNT(*) as cc
 FROM release_country
 GROUP BY country
-ORDER BY count DESC;
+ORDER BY cc DESC;
