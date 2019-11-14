@@ -1,5 +1,4 @@
-EXPLAIN
-SELECT rc.country, rc.release
+SELECT rc.country as country, rc.release as release
 FROM release_country rc
 WHERE rc.release IN (SELECT t.release
 	                 FROM track t

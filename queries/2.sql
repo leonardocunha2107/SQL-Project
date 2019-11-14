@@ -1,5 +1,4 @@
-EXPLAIN
-SELECT c.name,a.name
+SELECT c.name as name, a.name as name
 FROM country c, artist a, (SELECT t.area
                            FROM (SELECT area, COUNT(*)
                                  FROM artist

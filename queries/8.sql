@@ -1,4 +1,4 @@
-SELECT rc.country, rc.release
+SELECT rc.country as country, rc.release as release
 FROM release_country rc
 WHERE rc.country IN (SELECT rc_after.country
 	                 FROM release_country rc_before, release_country rc_after
