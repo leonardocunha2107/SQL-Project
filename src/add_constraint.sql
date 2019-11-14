@@ -1,4 +1,5 @@
-                                                                                                                      ?column?                                                            
+                                                                                                                      ?column?                                                                                                                      
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  ALTER TABLE "public"."track_has_artist" ADD CONSTRAINT "track_has_artist_pkey" PRIMARY KEY (artist, track);
  ALTER TABLE "public"."track" ADD CONSTRAINT "track_pkey" PRIMARY KEY (id);
  ALTER TABLE "public"."release_status" ADD CONSTRAINT "release_status_pkey" PRIMARY KEY (id);
@@ -32,4 +33,5 @@
  ALTER TABLE "public"."artist" ADD CONSTRAINT "artist_type_fkey" FOREIGN KEY (type) REFERENCES artist_type(id) ON DELETE CASCADE;
  ALTER TABLE "public"."artist" ADD CONSTRAINT "artist_gender_fkey" FOREIGN KEY (gender) REFERENCES gender(id) ON DELETE SET NULL;
  ALTER TABLE "public"."artist" ADD CONSTRAINT "artist_area_fkey" FOREIGN KEY (area) REFERENCES country(id) ON DELETE SET NULL;
+(33 rows)
 
