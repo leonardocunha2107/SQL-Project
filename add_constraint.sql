@@ -1,0 +1,35 @@
+                                                                                                                      ?column?                                                            
+ ALTER TABLE "public"."track_has_artist" ADD CONSTRAINT "track_has_artist_pkey" PRIMARY KEY (artist, track);
+ ALTER TABLE "public"."track" ADD CONSTRAINT "track_pkey" PRIMARY KEY (id);
+ ALTER TABLE "public"."release_status" ADD CONSTRAINT "release_status_pkey" PRIMARY KEY (id);
+ ALTER TABLE "public"."release_has_artist" ADD CONSTRAINT "release_has_artist_pkey" PRIMARY KEY (release, artist);
+ ALTER TABLE "public"."release_country" ADD CONSTRAINT "release_country_pkey" PRIMARY KEY (release, country);
+ ALTER TABLE "public"."release" ADD CONSTRAINT "release_pkey" PRIMARY KEY (id);
+ ALTER TABLE "public"."gender" ADD CONSTRAINT "gender_pkey" PRIMARY KEY (id);
+ ALTER TABLE "public"."country" ADD CONSTRAINT "country_pkey" PRIMARY KEY (id);
+ ALTER TABLE "public"."artist_type" ADD CONSTRAINT "artist_type_pkey" PRIMARY KEY (id);
+ ALTER TABLE "public"."artist" ADD CONSTRAINT "artist_pkey" PRIMARY KEY (id);
+ ALTER TABLE "public"."release_status" ADD CONSTRAINT "release_status_name_check" CHECK ((((name)::text = 'Official'::text) OR ((name)::text = 'Promotion'::text) OR ((name)::text = 'Bootleg'::text) OR ((name)::text = 'Pseudo-Release'::text)));
+ ALTER TABLE "public"."release_country" ADD CONSTRAINT "release_country_check3" CHECK ((((year % 400) = 0) OR (((year % 100) <> 0) AND ((year % 4) = 0)) OR (month <> 2) OR (day <= 28)));
+ ALTER TABLE "public"."release_country" ADD CONSTRAINT "release_country_check2" CHECK (((((year % 400) <> 0) AND (((year % 100) = 0) OR ((year % 4) <> 0))) OR (month <> 2) OR (day <= 29)));
+ ALTER TABLE "public"."release_country" ADD CONSTRAINT "release_country_check1" CHECK (((month <> ALL (ARRAY[4, 6, 9, 11])) OR (day <= 30)));
+ ALTER TABLE "public"."release_country" ADD CONSTRAINT "release_country_check" CHECK (((month >= 1) AND (month <= 12) AND (day >= 1) AND (day <= 31)));
+ ALTER TABLE "public"."artist" ADD CONSTRAINT "artist_check7" CHECK ((((eyear % 400) = 0) OR (((eyear % 100) <> 0) AND ((eyear % 4) = 0)) OR (emonth <> 2) OR (eday <= 28)));
+ ALTER TABLE "public"."artist" ADD CONSTRAINT "artist_check6" CHECK (((((eyear % 400) <> 0) AND (((eyear % 100) = 0) OR ((eyear % 4) <> 0))) OR (emonth <> 2) OR (eday <= 29)));
+ ALTER TABLE "public"."artist" ADD CONSTRAINT "artist_check5" CHECK (((emonth <> ALL (ARRAY[4, 6, 9, 11])) OR (eday <= 30)));
+ ALTER TABLE "public"."artist" ADD CONSTRAINT "artist_check4" CHECK (((emonth >= 1) AND (emonth <= 12) AND (eday >= 1) AND (eday <= 31)));
+ ALTER TABLE "public"."artist" ADD CONSTRAINT "artist_check3" CHECK ((((syear % 400) = 0) OR (((syear % 100) <> 0) AND ((syear % 4) = 0)) OR (smonth <> 2) OR (sday <= 28)));
+ ALTER TABLE "public"."artist" ADD CONSTRAINT "artist_check2" CHECK (((((syear % 400) <> 0) AND (((syear % 100) = 0) OR ((syear % 4) <> 0))) OR (smonth <> 2) OR (sday <= 29)));
+ ALTER TABLE "public"."artist" ADD CONSTRAINT "artist_check1" CHECK (((smonth <> ALL (ARRAY[4, 6, 9, 11])) OR (sday <= 30)));
+ ALTER TABLE "public"."artist" ADD CONSTRAINT "artist_check" CHECK (((smonth >= 1) AND (smonth <= 12) AND (sday >= 1) AND (sday <= 31)));
+ ALTER TABLE "public"."track_has_artist" ADD CONSTRAINT "track_has_artist_track_fkey" FOREIGN KEY (track) REFERENCES track(id) ON DELETE CASCADE;
+ ALTER TABLE "public"."track_has_artist" ADD CONSTRAINT "track_has_artist_artist_fkey" FOREIGN KEY (artist) REFERENCES artist(id) ON DELETE CASCADE;
+ ALTER TABLE "public"."track" ADD CONSTRAINT "track_release_fkey" FOREIGN KEY (release) REFERENCES release(id) ON DELETE CASCADE;
+ ALTER TABLE "public"."release_has_artist" ADD CONSTRAINT "release_has_artist_release_fkey" FOREIGN KEY (release) REFERENCES release(id) ON DELETE CASCADE;
+ ALTER TABLE "public"."release_has_artist" ADD CONSTRAINT "release_has_artist_artist_fkey" FOREIGN KEY (artist) REFERENCES artist(id) ON DELETE CASCADE;
+ ALTER TABLE "public"."release_country" ADD CONSTRAINT "release_country_release_fkey" FOREIGN KEY (release) REFERENCES release(id) ON DELETE SET NULL;
+ ALTER TABLE "public"."release" ADD CONSTRAINT "release_status_fkey" FOREIGN KEY (status) REFERENCES release_status(id) ON DELETE SET NULL;
+ ALTER TABLE "public"."artist" ADD CONSTRAINT "artist_type_fkey" FOREIGN KEY (type) REFERENCES artist_type(id) ON DELETE CASCADE;
+ ALTER TABLE "public"."artist" ADD CONSTRAINT "artist_gender_fkey" FOREIGN KEY (gender) REFERENCES gender(id) ON DELETE SET NULL;
+ ALTER TABLE "public"."artist" ADD CONSTRAINT "artist_area_fkey" FOREIGN KEY (area) REFERENCES country(id) ON DELETE SET NULL;
+
