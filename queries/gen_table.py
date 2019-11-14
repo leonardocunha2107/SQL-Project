@@ -6,6 +6,6 @@ with open("profiling.txt", "r", encoding="utf-8") as f:
     for i in range(0, len(lines), 6):
         n = lines[i]
         times = [str(int(float(l))) for l in lines[i + 1:i + 6]]
-        print('\n\t\t' + ' & '.join([n] + times) + ' \\\\ \\hline')
+        print('\t\t' + ' & '.join([n] + times) + ' \\\\ \\hline')
 
     print("\t\\end{tabular}\n\\end{center}")
