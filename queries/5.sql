@@ -1,3 +1,6 @@
-SELECT r.id as RELEASE, a.id as artist
-FROM release r, release_has_artist rha, artist a
-WHERE rha.release = r.id AND rha.artist = a.id AND rha.contribution = 0
+SELECT r.id as release, a.id as artist
+FROM release_has_artist rha
+INNER JOIN release r ON rha.release = r.id
+INNER JOIN artist a ON rha.artist = a.id
+WHERE rha.contribution = 0
+ORDER BY r.id, a.id

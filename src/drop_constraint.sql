@@ -1,5 +1,3 @@
-                                               ?column?                                               
-------------------------------------------------------------------------------------------------------
  ALTER TABLE "public"."artist" DROP CONSTRAINT "artist_area_fkey" CASCADE;
  ALTER TABLE "public"."artist" DROP CONSTRAINT "artist_gender_fkey" CASCADE;
  ALTER TABLE "public"."artist" DROP CONSTRAINT "artist_type_fkey" CASCADE;
@@ -33,5 +31,3 @@
  ALTER TABLE "public"."release_status" DROP CONSTRAINT "release_status_pkey" CASCADE;
  ALTER TABLE "public"."track" DROP CONSTRAINT "track_pkey" CASCADE;
  ALTER TABLE "public"."track_has_artist" DROP CONSTRAINT "track_has_artist_pkey" CASCADE;
-(33 rows)
-

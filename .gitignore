@@ -1,0 +1,2 @@
+# Ignore file with absolute file paths
+src/copy_tables.sql

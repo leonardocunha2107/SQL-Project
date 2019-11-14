@@ -1,6 +1,6 @@
 SELECT rc.country as country, rc.release as release
 FROM release_country rc
-WHERE rc.release IN (SELECT t.release
+WHERE rc.release IN (SELECT t.release, COUNT(*) as cnt
 	                 FROM track t
-	                 WHERE COUNT(*) > 1
+	                 WHERE cnt > 1
 	                 GROUP BY t.release);
