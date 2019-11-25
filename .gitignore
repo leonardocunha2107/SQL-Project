@@ -1,2 +1,5 @@
 # Ignore file with absolute file paths
 src/copy_tables.sql
+
+# Ignore .DS_Store
+.DS_Store
