@@ -1,4 +1,5 @@
-package edu.polytechnique.inf553;
+package query;
+
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -17,11 +18,11 @@ class GetArtistResult {
 	public String country;
 }
 
-public class PostgreService {
+public class PostGreService {
 	private PreparedStatement queryStatement;
 	private PreparedStatement getArtistStatement; 
 	
-	public PostgreService() throws SQLException {
+	public PostGreService() throws SQLException {
 		// Find the PostgreSQL class
 		try {
 			Class.forName("org.postgresql.Driver");
@@ -45,9 +46,9 @@ public class PostgreService {
 								+ "HAVING MAX(rc.year) > ? \n");
 			
 			getArtistStatement = connection.prepareStatement(
-								"SELECT a.name, a.gender, a.syear, c.name as country "
-								+ "FROM artist as a"
-								+ "FULL OUTER JOIN country as c on a.area = c.id"
+								"SELECT a.name, a.gender, a.syear, c.name as country \n "
+								+ "FROM artist as a \n"
+								+ "FULL OUTER JOIN country as c on a.area = c.id\n"
 								+ "WHERE a.id = ? ;");
 			
 		} 
@@ -106,9 +107,9 @@ public class PostgreService {
 	}
 	
 	public static void main(String[] args) {
-		PostgreService pgService = null;
+		PostGreService pgService = null;
 		try {
-			pgService = new PostgreService();
+			pgService = new PostGreService();
 		
 			List<QueryResult> results = pgService.query("Brazil", 2013);
 			while(!results.isEmpty())

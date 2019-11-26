@@ -1,4 +1,4 @@
-package edu.polytechnique.inf553;
+package query;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.polytechnique.inf553.PostgreService;
+import query.*;
 
 /**
  * This is a query servlet used only answer queries on artists and display information on them.
@@ -25,7 +25,7 @@ import edu.polytechnique.inf553.PostgreService;
 
 public final class QueryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private PostgreService pgService;
+	private PostGreService pgService;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -33,8 +33,8 @@ public final class QueryServlet extends HttpServlet {
 	public QueryServlet() throws SQLException {
 		super();
 		
-		// Try to create a PostgreService object (throws SQLException if there is an error)
-		pgService = new PostgreService();
+		// Try to create a PostGreService object (throws SQLException if there is an error)
+		pgService = new PostGreService();
 	}
 
 	/**
@@ -85,7 +85,7 @@ public final class QueryServlet extends HttpServlet {
 			throw new IllegalStateException("The received year parameter is not smaller than 2050");
 		}
 		
-		// Call the PostgreService to get the query results
+		// Call the PostGreService to get the query results
 		List<QueryResult> results = null;
 		try {
 			results = pgService.query(countryname, year);
@@ -95,7 +95,7 @@ public final class QueryServlet extends HttpServlet {
 		
 		// Get the URL of the request and create the redirect URL
 		String fullURL = request.getRequestURL().toString();
-		String redirectURL = fullURL.substring(0, fullURL.lastIndexOf('/') + 1) + "Artist?artistid=";
+		String redirectURL = fullURL.substring(0, fullURL.lastIndexOf('/') + 1) + "Artist?artistId=";
 		
 		
 		// Build the response HTML
@@ -149,7 +149,7 @@ public final class QueryServlet extends HttpServlet {
 			throw new ServletException("The received year parameter can not be converted to an integer, URL malformed");
 		}
 		
-		// Call the PostgreService to get the query results
+		// Call the PostGreService to get the query results
 		GetArtistResult result = null;
 		try {
 			result = pgService.getArtist(artistId);
@@ -182,3 +182,4 @@ public final class QueryServlet extends HttpServlet {
 		response.getWriter().append("</html>\n");
 	}
 }
+
